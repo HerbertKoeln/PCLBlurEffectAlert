@@ -38,7 +38,7 @@ extension PCLBlurEffectAlert {
 }
 
 // MARK: - PCLRespondsViewDelegate
-protocol PCLRespondsViewDelegate: class {
+protocol PCLRespondsViewDelegate: AnyObject {
     func respondsViewDidTouch(_ view: UIView)
 }
 
@@ -51,7 +51,7 @@ extension PCLBlurEffectAlert {
 }
 
 // MARK: - keyboardWillShow/Hide
-@objc protocol PCLAlertKeyboardNotificationObserver: class {
+@objc protocol PCLAlertKeyboardNotificationObserver: AnyObject {
     func keyboardWillShow(_ notification: Notification)
     func keyboardWillHide(_ notification: Notification)
 }
@@ -60,34 +60,34 @@ extension PCLBlurEffectAlert.NotificationManager {
     func addKeyboardNotificationObserver(_ observer: PCLAlertKeyboardNotificationObserver) {
         notificationCenter.addObserver(observer,
                                        selector: #selector(PCLAlertKeyboardNotificationObserver.keyboardWillShow(_:)),
-                                       name: Notification.Name.UIKeyboardWillShow,
+                                       name: UIResponder.keyboardWillShowNotification,
                                        object: nil)
         notificationCenter.addObserver(observer,
                                        selector: #selector(PCLAlertKeyboardNotificationObserver.keyboardWillHide(_:)),
-                                       name: Notification.Name.UIKeyboardWillHide,
+                                       name: UIResponder.keyboardWillHideNotification,
                                        object: nil)
     }
     func removeKeyboardNotificationObserver(_ observer: PCLAlertKeyboardNotificationObserver) {
         notificationCenter.removeObserver(observer,
-                                          name: Notification.Name.UIKeyboardWillShow,
+                                          name: UIResponder.keyboardWillShowNotification,
                                           object: nil)
         notificationCenter.removeObserver(observer,
-                                          name: Notification.Name.UIKeyboardWillHide,
+                                          name: UIResponder.keyboardWillHideNotification,
                                           object: nil)
     }
     func postKeyboardWillShowNotification() {
-        notificationCenter.post(Notification(name: Notification.Name.UIKeyboardWillShow,
+        notificationCenter.post(Notification(name: UIResponder.keyboardWillShowNotification,
                                              object: nil))
     }
     func postKeyboardWillHideNotification() {
-        notificationCenter.post(Notification(name: Notification.Name.UIKeyboardWillHide,
+        notificationCenter.post(Notification(name: UIResponder.keyboardWillHideNotification,
                                              object: nil))
     }
 }
 
 
 // MARK: - AlertActionEnabledDidChange
-@objc protocol PCLAlertActionEnabledDidChangeNotificationObserver: class {
+@objc protocol PCLAlertActionEnabledDidChangeNotificationObserver: AnyObject {
     func alertActionEnabledDidChange(_ notification: Notification)
 }
 // MARK: - private
